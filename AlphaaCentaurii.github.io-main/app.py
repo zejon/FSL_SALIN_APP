@@ -1,4 +1,5 @@
 import os, base64, warnings, time
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
 import pandas as pd
 import torch
@@ -22,6 +23,7 @@ CORS(app)
 
 # ── 1. Configuration & Setup ──────────────────────────────────
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f'Device: {device}')
 
 CONFIG = {
     'labels_csv': 'labels.csv',
@@ -51,6 +53,10 @@ IDLE = 'IDLE'
 SIGNING = 'SIGNING'
 EVALUATE = 'EVALUATE'
 
+MIN_SIGN_FRAMES = 8
+MAX_SIGN_FRAMES = 150
+END_TRIGGER = 15
+
 FEATURE_DIM = 198
 POSE_IDX = [11, 12, 13, 14, 15, 16]
 FACE_IDX = [1, 33, 61, 199, 263, 291]
@@ -73,8 +79,8 @@ last_confidence = 0.0
 # ── 2. Labels & Detectors ─────────────────────────────────────
 try:
     labels_df = pd.read_csv(CONFIG['labels_csv'])
-    class_names = [labels_df[labels_df['id'] == i]['label'].values[0] for i in range(CONFIG['num_classes'])]
-    print(f'Loaded {len(class_names)} classes')
+    classnames = [labels_df[labels_df['id'] == i]['label'].values[0] for i in range(CONFIG['num_classes'])]
+    print(f'Loaded {len(classnames)} classes')
 except Exception as e:
     print(f"❌ Could not load labels: {e}")
     exit()
@@ -99,7 +105,8 @@ _FACE = mp_vision.FaceLandmarker.create_from_options(
 
 print('Detectors initialized ✅')
 
-# ── 3. Feature Pipeline ───────────────────────────────────────
+
+# ── 3. Feature Pipeline (YOUR EXACT WORKING CODE) ─────────────
 def extract_frame_live(bgr_frame):
     row = np.full(FEATURE_DIM, np.nan, dtype=np.float32)
     row[144:180] = 0. 
@@ -133,6 +140,7 @@ def extract_frame_live(bgr_frame):
             row[180 + k * 3: 180 + k * 3 + 3] = [lms[idx].x, lms[idx].y, lms[idx].z]
 
     return row, hr, pr, fr, hand_ok
+
 
 def raw_rows_to_skeleton(raw_rows):
     # ── EXACT 0004 PREPROCESSING CLONE ──
@@ -173,6 +181,7 @@ def raw_rows_to_skeleton(raw_rows):
     seq[:, 144:162], seq[:, 162:171], seq[:, 171:180] = pv, rv, lv
     
     return seq
+
 
 # ── 4. PyTorch Model ──────────────────────────────────────────
 class FSLTransformer(nn.Module):
@@ -234,7 +243,7 @@ def predict_sign(seq):
     with torch.no_grad():
         probs = torch.softmax(model(tensor), dim=1)[0].cpu().numpy()
     top_idx = probs.argsort()[::-1][:CONFIG['top_k']]
-    return [(class_names[i], float(probs[i]) * 100) for i in top_idx]
+    return [(classnames[i], float(probs[i]) * 100) for i in top_idx]
 
 # ── 5. API Routes ─────────────────────────────────────────────
 def decode_base64_image(b64_str):
@@ -247,7 +256,7 @@ def decode_base64_image(b64_str):
 @app.route('/predict', methods=['POST'])
 def predict():
     global state, raw_rows, rolling_buffer
-    global rec_start_time, idle_start_time, no_hand_count # <--- SURGICAL FIX
+    global rec_start_time, idle_start_time, no_hand_count 
     global gloss_buffer, translated_text, last_prediction, last_confidence
 
     now = time.time()
@@ -280,7 +289,7 @@ def predict():
             if hand_ok:
                 raw_rows = list(rolling_buffer)
                 rec_start_time = now
-                no_hand_count = 0 # <--- SURGICAL FIX
+                no_hand_count = 0 
                 state = SIGNING
                 print('Auto-Triggered! Recording for 3s...')
             else:
@@ -289,18 +298,19 @@ def predict():
                     translated_text = ""
                     print("\n[Auto-Cleared] 4 seconds of inactivity.")
                     idle_start_time = now
+                    
+                    
 
         elif state == SIGNING:
             raw_rows.append(raw_row)
             
-            # <--- SURGICAL FIX: Track disappearing hands
             if hand_ok:
                 no_hand_count = 0
             else:
                 no_hand_count += 1
                 
-            # <--- SURGICAL FIX: Early exit & Trailing crop trigger
-            if (now - rec_start_time) >= CONFIG['record_secs'] or no_hand_count >= 15:
+            # Early exit & Trailing crop trigger
+            if (now - rec_start_time) >= CONFIG['record_secs'] or no_hand_count >= END_TRIGGER:
                 trim_n = min(no_hand_count, len(raw_rows) - 8)
                 if trim_n > 0:
                     raw_rows = raw_rows[:-trim_n]
@@ -309,7 +319,10 @@ def predict():
 
         # ── Evaluation Block ────────────────────────────────────
         if state == EVALUATE:
+            # FIX: We pass the raw_rows directly into your exact processing function!
+            # We DO NOT use np.linspace here anymore, because cv2.resize handles it inside raw_rows_to_skeleton!
             seq = raw_rows_to_skeleton(raw_rows)
+            
             display_top5 = predict_sign(seq)
             lbl, conf = display_top5[0]
 
@@ -327,9 +340,20 @@ def predict():
             idle_start_time = now  
             state = IDLE
 
+        top_3_list = []
+        # Check if we have predictions to show
+        if 'display_top5' in locals():
+            for lbl, conf in display_top5[:3]:
+                top_3_list.append({
+                    "label": lbl.upper(),
+                    "conf": float(conf)
+                })
+        # ---------------------
+
         return jsonify({
             "status": "success",
             "state": state,
+            "top_3": top_3_list,  # <--- Include this in the return
             "new_sign": last_prediction if last_confidence >= CONFIDENCE_THRESH else "...",
             "history": " ".join(gloss_buffer).replace("_", " "),
             "sentence": translated_text if translated_text else "...",
@@ -340,6 +364,25 @@ def predict():
     except Exception as e:
         print(f"❌ ERROR: {e}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/reset', methods=['POST'])
+def reset():
+    global state, raw_rows, rolling_buffer
+    global rec_start_time, idle_start_time, no_hand_count 
+    global gloss_buffer, translated_text, last_prediction, last_confidence
+
+    state = IDLE
+    raw_rows = []
+    rolling_buffer.clear()
+    no_hand_count = 0
+    gloss_buffer.clear()
+    translated_text = ""
+    last_prediction = ""
+    last_confidence = 0.0
+    idle_start_time = time.time()
+
+    print("🔄 STATE CLEARED")
+    return jsonify({"status": "cleared"})
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
