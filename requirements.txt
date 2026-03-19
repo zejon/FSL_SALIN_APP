@@ -20,6 +20,7 @@ gevent==25.9.1
 google-pasta==0.2.0
 greenlet==3.3.2
 grpcio==1.78.1
+gunicorn==25.1.0
 h5py==3.14.0
 idna==3.11
 inflect==7.5.0
