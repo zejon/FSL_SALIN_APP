@@ -1,6 +1,8 @@
 flask
 flask-cors
 gunicorn
-matplotlib
-pandas
 numpy
+pandas
+torch
+opencv-python
+mediapipe
