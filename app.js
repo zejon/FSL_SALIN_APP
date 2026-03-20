@@ -108,8 +108,16 @@ async function processVideoFrame() {
     if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
         canvasCtx.save();
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.restore();
+        // --- MIRROR EFFECT ---
+    // Move to the right side of the canvas
+    canvasCtx.translate(canvasElement.width, 0);
+    // Flip the image horizontally
+    canvasCtx.scale(-1, 1);
+    
+    // Draw the video
+    canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+    
+    canvasCtx.restore();
     }
 
     // Loop continuously before the next browser repaint

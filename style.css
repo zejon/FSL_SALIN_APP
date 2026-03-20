@@ -60,6 +60,7 @@ button {
     width: 100%;       /* Fills the container width */
     height: auto;      /* Keeps the aspect ratio */
     display: block;
+    object-fit: cover;
 }
 
 .s-to-t-section{
@@ -70,7 +71,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* top: 10px; */
+  /* top: 5px; */
   color: #000000;
   font-family: 'Google Sans', sans-serif;
   font-size: 14px;
