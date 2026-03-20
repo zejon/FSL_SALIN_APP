@@ -6,3 +6,4 @@ pandas
 torch
 opencv-python
 mediapipe
+tensorflow
