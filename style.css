@@ -1,22 +1,26 @@
+/* 
+#3878EC
+#323232
+#F0F0F0
+#FFFFFF
+*/
 
 
-body {
+html, body {
   font-family: 'Google Sans', sans-serif;
   margin: 0;
-  display: grid;
-  place-items: center;
-  min-height: 100%;
+  height: 100%;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-.main-container {
+.main-container{
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  
+  justify-content: center;
   align-items: center; 
-  padding: 10px;
-  
+
 }
 
 .main-container,
@@ -31,30 +35,227 @@ button {
   outline: 0;
 }
 
-.s-to-t-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 600px;
-  top: 80px;
-  width: 100%;
-  height: 550px;
-  font-size: 0px;
-  z-index: 10;
-  margin: 0 auto;
-  overflow: hidden;
+.real-container {
+  position: relative;
+  display: flex;          
+  flex-direction: row;
+  width: 98%;             
+  max-width: 1800px;      
+  gap: 30px;
+  margin: 20px auto;
+  justify-content: space-between;
+}
 
-  width: 100%;
-  height: 80vh;
-  left: 50%;
-  right: 50%;
+#header{
+  height: 80px;
+  position: fixed;
+  top: 0;
   left: 0;
-  bottom: 20px;
-  background: #ececec;
-  box-shadow: 0px 0px 8px 4px #8888;
-  border-radius: 20px;
+  right: 0;
+  z-index: 102;
+  padding: 0;
+  backdrop-filter: blur(10px);
+  padding: 10px;
+  position: relative;
+}
+
+#header .header-info{
+  position: relative;
+  color: #3878ec;
+  z-index: 30;
   
 }
+
+.header-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1800px;
+  width: 100%;
+  color: blue;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  gap: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+
+.logo-container {
+  width: 64px;
+  height: 64px;
+  
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F0F0F0;
+  border: 2px solid #3878EC;
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.logo-image {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.app-title{
+  font-size: 2.5rem;
+  color: #3878EC;
+  margin: 0;
+}
+
+#flipBtn {
+  
+  position: absolute;
+  top: 0.5em;
+  right: 0;                  
+  width: 20%;
+  height: 20%;      
+  z-index: 1010;      
+  
+  background-color: transparent;
+  background-image: url('favicon-flica.ico');
+  background-repeat: no-repeat;
+  background-position: center;
+
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+}
+
+.floatingBtn {
+  float: right;
+  display: flex;
+  align-items: center;
+  position: relative;
+                
+  width: 45px;
+  height: 45px;
+  border-radius: 50%; 
+  border: none;
+  background-color: #f0f2f5;
+  color:#3878EC;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease; 
+}
+
+.s-to-t-section {
+  top: 0;
+  padding: 10px;
+  padding-top: 0;
+  flex: 2;
+  background: #F0F0F0;
+  align-items: center;
+  max-width: 920px;
+  z-index: 10;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0px 0px 8px 4px #8888;
+  border-radius: 20px;
+}
+
+.sentenceBox {
+    position: relative;
+    margin-top: 10px;
+    background: #323232;
+    color: #f5f5f5f5; 
+    font-family: 'Google Sans', sans-serif;
+    font-size: 1.5rem; 
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    /* border: 2px solid #00ff00; */
+    min-height: 50px;
+    /* box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); */
+    /* box-shadow: 0px 0px 8px 4px #8888; */
+    transition: 0.3s;
+    margin-bottom: 2px;
+    width: 100%;
+}
+
+
+.sidebar-section {
+    position: relative;
+    flex: 1;                 /* Takes up the remaining 30-40% of the row */
+    display: flex;
+    flex-direction: column;  /* Stacks cards top-to-bottom */
+    align-items: center;     /* Centers cards horizontally in the sidebar */
+    gap: 24px;               /* Space between Predictions, Words, and Output */
+    padding: 0 10px;
+    min-width: 350px;
+}
+
+.prediction-card{
+    position: relative; 
+    top: auto;
+    left: auto;
+
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #F0F0F0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 0px 8px 4px #8888;
+}
+
+.recognition-footer {
+    position: relative; 
+    width: 100%;   
+    margin: 0;       
+    background: #323232; 
+    border-radius: 12px;
+    padding: 20px;
+    align-items: center;
+    
+}
+
+.card-header-tab {
+    background: white;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    padding: 5px 15px;
+    border-radius: 8px 8px 0 0;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 2;
+    margin-left: 10px;
+}
+
+.card-body {
+    background: #323232;
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Seamlessly connects to the header tab */
+    min-height: 180px; 
+}
+
+
 
 #input_video, #output_canvas {
     width: 100%;       /* Fills the container width */
@@ -63,24 +264,62 @@ button {
     object-fit: cover;
 }
 
-.s-to-t-section{
-  position: relative;
+
+/* WORDS LIST */
+
+#confirmed-words-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;       
+    height: 180px;         
+    width: 100%;
+    align-content: flex-start; 
+    overflow-x: auto;      
+    padding: 20px;
+    gap: 0 40px;           
 }
 
-.sign-to-text {
+.word-history-row {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 20px;                   
+    padding: 10px 0;
+    border-bottom: 1px solid #222; 
+    width: 100px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #222;
+}
+
+.history-label {
+    color: #FFFFFF;                 
+    font-size: 0.8rem;
+    min-width: 60px;             
+}
+
+.history-value {
+    color: #3878EC;              
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: monospace;
+}
+
+
+
+.card-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* top: 5px; */
+  top: 0;
   color: #000000;
   font-family: 'Google Sans', sans-serif;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 1.2em;
   font-weight: 600;
   text-align: center;
   z-index: 12;
 }
 
-.sign-to-text{
+.card-header{
   position: relative;
 }
 
@@ -98,21 +337,7 @@ button {
   border-radius: 20px;
 }
 
-.app-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  width: 100%;
-  height: 55px;
-  color: #0f4bb4;
-  font-family: 'Google Sans', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 20px;
-  text-align: center;
-  z-index: 1;
-}
+
 
 /* // LE PHONE screen size Galaxy S24 FE */
 .screen-size {
@@ -169,7 +394,7 @@ button {
 }
 
 
-#subtitleBox {
+/* #subtitleBox {
   position: relative;
   top: 5px;
   margin: 15px auto 10px;
@@ -185,44 +410,13 @@ button {
   text-align: center;
   border-radius: 15px;
   z-index: 15;
-}
+} */
 
-#flipBtn {
-  position: absolute;
-  top: 0.5em;
-  right: 0;                  
-  width: 20%;
-  height: 20%;      
-  z-index: 1010;      
-  
-  background-color: transparent;
-  background-image: url('favicon-flica.ico');
-  background-repeat: no-repeat;
-  background-position: center;
 
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-
-}
-
-.floatingBtn {
-  position: fixed;
-  right: 10px;                  
-  width: 80px;      
-  z-index: 100;      
-  padding: 10px 15px;
-  font-size: 12px;
-  background-color: #0f4bb4;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #3878EC;
+  color: #FFFFFF;
 }
 
 
@@ -268,22 +462,6 @@ button:hover {
     width: 100%; 
   }
 
-  .floatingBtn {
-  position: fixed;
-  right: 10px;                  
-  width: 40px;      
-  z-index: 100;      
-  padding: 10px 15px;
-  font-size: 6px;
-  align-items: center;
-  background-color: #0f4bb4;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-
 }
 
 
@@ -323,7 +501,7 @@ button:hover {
 }
 
 .rank-num {
-    font-size: 10px;
+    font-size: 12px;
     color: whitesmoke;
     width: 30px;
 }
@@ -331,7 +509,7 @@ button:hover {
 .prediction-word {
     flex-grow: 1;
     color: #aaa;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 /* The Confidence Level Style */
@@ -343,13 +521,13 @@ button:hover {
 
 /* Highlight for the #1 Confidence Level */
 .top-rank .prediction-word {
-    color: #00FF00;
-    font-size: 18px;
-    font-weight: 800;
+    color: #3878ec;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .top-rank .confidence-val {
-    color: #00FF00;
+    color: #3878ec;
     font-size: 18px;
 }
 
@@ -427,5 +605,6 @@ button:hover {
     font-weight: bold;
     cursor: pointer;
 }
+
 
 

@@ -7,11 +7,10 @@ const cacheName = 'myFilesToCache-v1';
 const filesToCache = [
     '/', // Cache the main index route
     '/style.css',
-    '/translate.js',
+    '/app.js',
     
     // Example common asset types
-    '/android-chrome-192x192.png',
-    '/android-chrome-512x512.png',
+    'SALIN_LOGO.png',
 
 ];
 

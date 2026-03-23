@@ -18,62 +18,51 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
 
     <style>
-      /* 1. LAYOUT CONTROLLER */
-      .s-to-t-section {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          position: relative;
-          width: 100%;
-          margin-top: 20px;
-          
-      }
-
 
       .video-wrapper {
-        width: 100%;           /* Fills the available width */
-        max-width: 640px;      /* Don't go larger than the actual video resolution */
-        aspect-ratio: 4 / 3;   /* This is the secret—forces the box to be 4:3 */
-        margin: 10px auto;      /* Centers it on the page */
-        overflow: hidden;      /* Clips anything outside */
-        position: relative;
-        margin-top: 0;
+        width: 100%;                
+        aspect-ratio: 4 / 3;   
+        margin: auto;      
+        overflow: hidden;      
+        margin: 0 auto;
+        
       }
 
-      /* 2. THE CANVAS (Green Lines Video) */
+
       #output_canvas {
           position: relative;
           display: block; 
-          width: 95%;
+          width: 100%;
           object-fit: cover;
           height: 100%; 
           aspect-ratio: 4 / 3;
-          max-width: 800px;
           border-radius: 12px;
-          margin: 0 auto;
+          margin: 0;
           /* border: 2px solid #00ff00; */
           z-index: 2; 
-          background-color: #000; 
+          background-color: #323232; 
           margin-bottom: 10px; 
           /* transform: scaleX(-1); */
+          
       }
 
       
 
       /* 3. NEW: OUTPUT CONTAINER (Holds both boxes) */
       .output-container {
-          width: 95%;
-          max-width: 640px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          z-index: 2;
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 2;
+        align-content: center;
       }
+
 
       /* 3a. LIVE BOX (Yellow - What camera sees now) */
       #liveBox {
-          background: rgba(0, 0, 0, 0.6);
+          background: #323232;
           color: #FFFF00; /* Yellow */
           font-family: 'Google Sans', sans-serif;
           font-size: 1.0rem;
@@ -87,10 +76,10 @@
 
       /* 3b. SENTENCE BOX (Green - The final validated text) */
       #sentenceBox {
-          background: rgba(0, 0, 0, 0.9);
-          color: #f5f5f5f5; /* Green */
+          background: #323232;
+          color: #FFFFFF; 
           font-family: 'Google Sans', sans-serif;
-          font-size: 1.5rem; /* Bigger font */
+          font-size: 1.5rem; 
           font-weight: bold;
           padding: 10px;
           border-radius: 12px;
@@ -102,6 +91,7 @@
           transition: 0.3s;
           margin-bottom: 2px;
           width: 100%;
+          word-wrap: break-word;
       }
 
       /* 4. THE RESET BUTTON */
@@ -130,68 +120,111 @@
   
   <body>
     <div class="main-container">
-
-      <span class="app-title">SALIN</span>
-      <div class="screen-size"></div>
-      <span class="sub-head">Filipino Sign Language Translation Tool</span>
-
-      <div class="s-to-t-section">
-        <span class="sign-to-text">Sign-to-Text</span>
-        
-        <video id="input_video" autoplay playsinline></video>
-        
-        <div class="video-wrapper">
-  <canvas id="output_canvas" width="640" height="480"></canvas>
-</div>
-
-        <button id="flipBtn" aria-label="Flip Camera"></button>
-        <canvas id="canvasElement" style="display:none;"></canvas>
-
-        <div class="output-container">
-            <div id="liveBox">Initializing...</div>
-            <div id="sentenceBox">Start Signing</div>
-        </div>
-
-          <div class="recognition-footer">
-            <div class="footer-meta">
-                <span id="fps-display">0 FPS</span>
-                <span id="status-label" class="status-ready">READY</span>
-            </div>
-
-            <div class="confidence-list">
-                <div class="prediction-row top-rank">
-                    <span class="rank-num">01</span>
-                    <span class="prediction-word" id="word-1"></span>
-                    <span class="confidence-val" id="conf-1"></span>
-                </div>
-
-                <div class="prediction-row">
-                    <span class="rank-num">02</span>
-                    <span class="prediction-word" id="word-2"></span>
-                    <span class="confidence-val" id="conf-2"></span>
-                </div>
-
-                <div class="prediction-row">
-                    <span class="rank-num">03</span>
-                    <span class="prediction-word" id="word-3"></span>
-                    <span class="confidence-val" id="conf-3"></span>
-                </div>
-            </div>
-        </div>
-
-        <div id="errorMessage"></div>
-        
-      </div>
+      <div id="header" class="header-info">
+        <div class="header-container">
+          <div class="header-left">
+          <div class="logo-container">
+            <img src="SALIN_LOGO.png" alt="FSLSalinApp" class="logo-image">
+          </div>
   
-      <button id="infoBtn" class="floatingBtn">App Info</button>
+          <h1 class="app-title">SALIN</h1>
+          </div>
+
+          <button id="infoBtn" class="floatingBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
       
-      <div id="myCard" class="card" style="display:none;">
-        <h3>SALIN</h3>
-        <p>A Filipino Sign Language Translation Tool powered by Deep Learning.
-          A Filipino Sign Language Translation Tool for the development of the multimodal model of Filipino Sign Language Translation
-          The app acts only as testing app for the model
-        </p>
-        <button id="closeBtn">Close</button>
+      <div class="real-container">
+        
+        <div class="s-to-t-section">
+          <span class="card-header">Sign-to-Text</span>
+          
+          <video id="input_video" autoplay playsinline></video>
+          
+          <div class="video-wrapper">
+            <canvas id="output_canvas" width="640" height="480"></canvas>
+          </div>
+
+          <button id="flipBtn" aria-label="Flip Camera"></button>
+          <canvas id="canvasElement" style="display:none;"></canvas>
+
+          
+          <div class="output-container">
+              <div id="liveBox">Initializing...</div>
+              <div class="sentenceBox">Start Signing</div>
+          </div>
+        </div> 
+
+
+            <!-- THIS GO RIGHT SIDE -->
+            <div class="sidebar-section">
+              <div class="prediction-card">
+                  <div class="card-header-tab">Predictions</div>
+                    <div class="card-body">
+                  <div class="footer-meta">
+                      <span id="fps-display">0 FPS</span>
+                      <span id="status-label" class="status-ready">READY</span>
+                </div>
+
+                  <div class="confidence-list">
+                    <div class="prediction-row top-rank">
+                        <span class="rank-num">01</span>
+                        <span class="prediction-word" id="word-1"></span>
+                        <span class="confidence-val" id="conf-1"></span>
+                    </div>
+
+                    <div class="prediction-row">
+                        <span class="rank-num">02</span>
+                        <span class="prediction-word" id="word-2"></span>
+                        <span class="confidence-val" id="conf-2"></span>
+                    </div>
+
+                    <div class="prediction-row">
+                        <span class="rank-num">03</span>
+                        <span class="prediction-word" id="word-3"></span>
+                        <span class="confidence-val" id="conf-3"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                  <div class="prediction-card">
+                      <div class="card-header-tab">Words</div>
+                      <div class="card-body" id="confirmed-words-list" style="overflow-y: auto; max-height: 250px;"></div>
+                  </div>
+
+                  <div class="prediction-card">
+                      <div class="card-header-tab">Output</div>
+                      <div class="card-body">
+                        <div class="output-container">
+                            <div id="sentenceBox"></div>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+    
+
+            <div id="errorMessage"></div>
+
+      
+      
+      
+        <div id="myCard" class="card" style="display:none;">
+          <h3>SALIN</h3>
+          <p>A Filipino Sign Language Translation Tool powered by Deep Learning.
+            A Filipino Sign Language Translation Tool for the development of the multimodal model of Filipino Sign Language Translation
+            The app acts only as testing app for the model
+          </p>
+          <button id="closeBtn">Close</button>
+        </div>
+
       </div>
 
       

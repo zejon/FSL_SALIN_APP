@@ -12,6 +12,41 @@ const hiddenCtx = hiddenCanvas.getContext('2d');
 hiddenCanvas.width = 640;  // Lock resolution to keep payloads tiny
 hiddenCanvas.height = 480;
 
+
+
+let idleTimer = null;
+let wordCounter = 1;
+let lastConfirmedWord = "";
+const IDLE_TIME_LIMIT = 5000;
+
+function clearTranslator() {
+    // Reset the internal counter
+    wordCounter = 1;
+    lastConfirmedWord = "";
+    previousHistory = "";
+
+    // Clear the Output Box
+    if (sentenceBox) sentenceBox.innerText = "";
+
+    // Clear the Words History List
+    const wordsList = document.getElementById('confirmed-words-list');
+    if (wordsList) {
+        wordsList.innerHTML = "";
+    }
+
+    console.log("Translator Cleared: Device was idle too long.");
+}
+
+function addWordToHistory(word) {
+    const list = document.getElementById('confirmed-words-list');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'word-history-row'; // Style this in CSS
+    row.innerHTML = `<span class="history-label">Word ${wordCounter}</span><span class="history-value">${word.toUpperCase()}</span>`;
+    list.prepend(row);
+    wordCounter++;
+}
+
 // TRAFFIC CONTROL: Prevents network lag and maintains local FPS
 let isProcessing = false;
 let previousHistory = "";
@@ -37,6 +72,7 @@ async function processVideoFrame() {
             });
             
             const data = await response.json();
+            
 
         // 1. UPDATE THE TOP 3 PREDICTIONS (The code from your screenshot)
         if (data.top_3) {
@@ -48,25 +84,39 @@ async function processVideoFrame() {
                 if (wordEl && confEl) {
                     wordEl.innerText = item.label;
                     confEl.innerText = item.conf.toFixed(1) + "%";
-                    wordEl.style.color = (rank === 1) ? "#00FF00" : "#888";
-                    confEl.style.color = (rank === 1) ? "#00FF00" : "#888";
+                    wordEl.style.color = (rank === 1) ? "#3878ec" : "#F0F0F0";
+                    confEl.style.color = (rank === 1) ? "#3878ec" : "#F0F0F0";
                 }
             });
         }
 
-        // 2. UPDATE THE STATUS LABEL (Place this right here)
-        const statusLabel = document.getElementById('status-label');
-        statusLabel.innerText = data.state;
+        // 2. UPDATE THE STATUS LABEL
+const statusLabel = document.getElementById('status-label');
+statusLabel.innerText = data.state;
 
-        // Change color based on the state for visual feedback
-        if (data.state === 'SIGNING') {
-            statusLabel.style.color = "#ff4444"; // Red
-        } else if (data.state === 'EVALUATE') {
-            statusLabel.style.color = "#ffbb00"; // Orange
-        } else {
-            statusLabel.style.color = "#00FF00"; // Green
-        }
-
+if (data.state === 'SIGNING' || data.state === 'EVALUATE') {
+    // A. If the user is actively signing or the model is thinking...
+    statusLabel.style.color = (data.state === 'SIGNING') ? "#ff4444" : "#ffbb00";
+    
+    // STOP the countdown immediately!
+    if (idleTimer) {
+        clearTimeout(idleTimer);
+        idleTimer = null;
+        console.log("Timer Reset: User is active.");
+    }
+} else {
+    // B. This is the 'IDLE' or 'READY' state (No hand/sign detected)
+    statusLabel.style.color = "#3878ec"; 
+    
+    // START the countdown only if it's not already running
+    if (!idleTimer) {
+        console.log("Timer Started: Waiting for inactivity...");
+        idleTimer = setTimeout(() => {
+            clearTranslator();
+            idleTimer = null;
+        }, IDLE_TIME_LIMIT); 
+    }
+}
         // 3. UPDATE FPS (Performance metric)
         const now = Date.now();
         const fps = Math.round(1000 / (now - (window.lastTime || now)));
@@ -84,18 +134,28 @@ async function processVideoFrame() {
 
             // --- 2. VALIDATION & FINAL SENTENCE (Green Flash) ---
             if (data.history !== previousHistory) {
-                if (data.sentence && data.sentence !== "..." && data.sentence !== "") {
-                    sentenceBox.innerText = data.sentence;
-                } else {
-                    sentenceBox.innerText = data.history; 
-                }
-                
-                previousHistory = data.history;
-                
-                // Visual Flash Effect
-                sentenceBox.style.backgroundColor = "#000000"; 
-                setTimeout(() => { sentenceBox.style.backgroundColor = "black"; }, 500);
-            }
+    // This block runs ONLY when a new word is confirmed by the backend
+    
+    // Split the history string into an array to get the latest word added
+    const historyArray = data.history.trim().split(" ");
+    const latestWord = historyArray[historyArray.length - 1];
+
+    if (latestWord && latestWord !== "...") {
+        addWordToHistory(latestWord); // <--- ADD THIS LINE HERE
+    }
+
+    if (data.sentence && data.sentence !== "..." && data.sentence !== "") {
+        sentenceBox.innerText = data.sentence;
+    } else {
+        sentenceBox.innerText = data.history; 
+    }
+    
+    previousHistory = data.history;
+    
+    // Visual Flash Effect
+    sentenceBox.style.backgroundColor = "#333"; // Slight grey flash
+    setTimeout(() => { sentenceBox.style.backgroundColor = "#323232"; }, 500);
+}
         } catch (err) {
             console.error("Server error or timeout:", err);
         } finally {
@@ -119,6 +179,8 @@ async function processVideoFrame() {
     
     canvasCtx.restore();
     }
+
+    
 
     // Loop continuously before the next browser repaint
     requestAnimationFrame(processVideoFrame);
