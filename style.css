@@ -97,8 +97,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F0F0F0;
-  border: 2px solid #3878EC;
+  background-color: #FFFFFF;
+  /* border: 2px solid #3878EC; */
   overflow: hidden; 
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -178,7 +178,7 @@ button {
 .sentenceBox {
     position: relative;
     margin-top: 10px;
-    background: #323232;
+    background: #0f172a;
     color: #f5f5f5f5; 
     font-family: 'Google Sans', sans-serif;
     font-size: 1.5rem; 
@@ -246,7 +246,7 @@ button {
 }
 
 .card-body {
-    background: #323232;
+    background: #0f172a;
     color: #FFFFFF;
     border-radius: 10px;
     padding: 20px;
@@ -292,7 +292,7 @@ button {
 
 .history-label {
     color: #FFFFFF;                 
-    font-size: 0.8rem;
+    font-size: 1.0rem;
     min-width: 60px;             
 }
 
@@ -301,6 +301,7 @@ button {
     font-weight: bold;
     text-transform: uppercase;
     font-family: monospace;
+    font-size: 16px;
 }
 
 
@@ -501,7 +502,7 @@ button:hover {
 }
 
 .rank-num {
-    font-size: 12px;
+    font-size: 14px;
     color: whitesmoke;
     width: 30px;
 }
@@ -509,7 +510,7 @@ button:hover {
 .prediction-word {
     flex-grow: 1;
     color: #aaa;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 /* The Confidence Level Style */

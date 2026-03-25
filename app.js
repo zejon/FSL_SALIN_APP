@@ -17,7 +17,7 @@ hiddenCanvas.height = 480;
 let idleTimer = null;
 let wordCounter = 1;
 let lastConfirmedWord = "";
-const IDLE_TIME_LIMIT = 5000;
+const IDLE_TIME_LIMIT = 4000;
 
 function clearTranslator() {
     // Reset the internal counter
@@ -41,9 +41,9 @@ function addWordToHistory(word) {
     const list = document.getElementById('confirmed-words-list');
     if (!list) return;
     const row = document.createElement('div');
-    row.className = 'word-history-row'; // Style this in CSS
+    row.className = 'word-history-row'; 
     row.innerHTML = `<span class="history-label">Word ${wordCounter}</span><span class="history-value">${word.toUpperCase()}</span>`;
-    list.prepend(row);
+    list.appendChild(row);
     wordCounter++;
 }
 
@@ -141,7 +141,7 @@ if (data.state === 'SIGNING' || data.state === 'EVALUATE') {
     const latestWord = historyArray[historyArray.length - 1];
 
     if (latestWord && latestWord !== "...") {
-        addWordToHistory(latestWord); // <--- ADD THIS LINE HERE
+        addWordToHistory(latestWord); 
     }
 
     if (data.sentence && data.sentence !== "..." && data.sentence !== "") {
@@ -153,8 +153,8 @@ if (data.state === 'SIGNING' || data.state === 'EVALUATE') {
     previousHistory = data.history;
     
     // Visual Flash Effect
-    sentenceBox.style.backgroundColor = "#333"; // Slight grey flash
-    setTimeout(() => { sentenceBox.style.backgroundColor = "#323232"; }, 500);
+    // sentenceBox.style.backgroundColor = "white"; // Slight grey flash
+    setTimeout(() => { sentenceBox.style.backgroundColor = "#0f172a"; }, 500);
 }
         } catch (err) {
             console.error("Server error or timeout:", err);
