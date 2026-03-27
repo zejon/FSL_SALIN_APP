@@ -44,6 +44,7 @@ button {
   gap: 30px;
   margin: 20px auto;
   justify-content: space-between;
+  margin: clamp(10px, 5vh, 10px) auto;
 }
 
 #header{
@@ -61,7 +62,7 @@ button {
 
 #header .header-info{
   position: relative;
-  color: #3878ec;
+  color: #4770B0;
   z-index: 30;
   
 }
@@ -97,7 +98,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FFFFFF;
+  background-color: white;
   /* border: 2px solid #3878EC; */
   overflow: hidden; 
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -111,7 +112,7 @@ button {
 
 .app-title{
   font-size: 2.5rem;
-  color: #3878EC;
+  color: #4770B0;
   margin: 0;
 }
 
@@ -129,7 +130,7 @@ button {
   background-repeat: no-repeat;
   background-position: center;
 
-  color: white;
+  color: #252b3b;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -152,7 +153,7 @@ button {
   border-radius: 50%; 
   border: none;
   background-color: #f0f2f5;
-  color:#3878EC;
+  color:#4770B0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -171,15 +172,15 @@ button {
   z-index: 10;
   overflow: hidden;
   width: 100%;
-  box-shadow: 0px 0px 8px 4px #8888;
+  box-shadow: 0px 0px 8px 4px #b8b8b888;
   border-radius: 20px;
 }
 
 .sentenceBox {
     position: relative;
     margin-top: 10px;
-    background: #0f172a;
-    color: #f5f5f5f5; 
+    background: #dde4ee;
+    color: #252b3b; 
     font-family: 'Google Sans', sans-serif;
     font-size: 1.5rem; 
     font-weight: bold;
@@ -218,7 +219,7 @@ button {
     background-color: #F0F0F0;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0px 0px 8px 4px #8888;
+    box-shadow: 0px 0px 8px 4px #b8b8b888;
 }
 
 .recognition-footer {
@@ -246,13 +247,14 @@ button {
 }
 
 .card-body {
-    background: #0f172a;
-    color: #FFFFFF;
+    background: #dde4ee;
+    color: #252b3b;
     border-radius: 10px;
     padding: 20px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     margin-top: -1px; /* Seamlessly connects to the header tab */
-    min-height: 180px; 
+    min-height: 180px;
+    /* box-shadow: 0px 0px 8px 4px #8888;  */
 }
 
 
@@ -281,27 +283,25 @@ button {
 
 .word-history-row {
     display: flex;
-    justify-content: flex-start; 
-    gap: 20px;                   
-    padding: 10px 0;
-    border-bottom: 1px solid #222; 
-    width: 100px;
+    gap: 10px;                   
+    padding: 4px 0;
+    border-top: 1px solid #b9b9b9; 
+    width: 140px;
     box-sizing: border-box;
-    border-bottom: 1px solid #222;
 }
 
 .history-label {
-    color: #FFFFFF;                 
-    font-size: 1.0rem;
+    color: #252b3b;                 
+    font-size: 1.0em;
     min-width: 60px;             
 }
 
 .history-value {
-    color: #3878EC;              
+    color: #4770B0;              
     font-weight: bold;
     text-transform: uppercase;
     font-family: monospace;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 
@@ -334,37 +334,10 @@ button {
   left: 0;
   bottom: 20px;
   background: #ececec;
-  box-shadow: 0px 0px 8px 4px #8888;
+  box-shadow: 0px 0px 8px 4px #b8b8b888;
   border-radius: 20px;
 }
 
-
-
-/* // LE PHONE screen size Galaxy S24 FE */
-.screen-size {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: #ffffff;
-}
-
-.sub-head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 40px;
-  width: 100%;
-  height: 45px;
-  color: #0f4bb4;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 12px;
-  text-align: center;
-  z-index: 2;
-}
 
 
 #videoElement {
@@ -373,7 +346,6 @@ button {
   width: 95%;
   height: 90%;
   margin: 5px auto 10px;
-  /* background-color: black; */
   z-index: 13;
 
   object-fit: cover; 
@@ -416,7 +388,7 @@ button {
 
 
 button:hover {
-  background-color: #3878EC;
+  background-color: #4770b0;
   color: #FFFFFF;
 }
 
@@ -465,11 +437,7 @@ button:hover {
 
 }
 
-
-
-
-/* THE FOOTER */
-.recognition-footer {
+/* .recognition-footer {
     position: relative;
     background: #111111;
     padding: 18px;
@@ -482,7 +450,7 @@ button:hover {
     margin: 10px;
     border-radius: 12px;
     padding: 20px;
-}
+} */
 
 .footer-meta {
     display: flex;
@@ -497,19 +465,19 @@ button:hover {
 .prediction-row {
     display: flex;
     align-items: center;
-    padding: 8px 0;
-    border-top: 1px solid #222;
+    padding: 6px 0;
+    border-top: 1px solid #bdbdbd;
 }
 
 .rank-num {
-    font-size: 14px;
-    color: whitesmoke;
+    font-size: 16px;
+    color: #252b3b;
     width: 30px;
 }
 
 .prediction-word {
     flex-grow: 1;
-    color: #aaa;
+    color: #252b3b;
     font-size: 16px;
 }
 
@@ -522,14 +490,14 @@ button:hover {
 
 /* Highlight for the #1 Confidence Level */
 .top-rank .prediction-word {
-    color: #3878ec;
-    font-size: 14px;
+    color: #4770B0;
+    font-size: 12px;
     font-weight: 700;
 }
 
 .top-rank .confidence-val {
-    color: #3878ec;
-    font-size: 18px;
+    color: #4770B0;
+    font-size: 12px;
 }
 
 @media (max-width: 480px) {
@@ -538,7 +506,7 @@ button:hover {
         padding: 15px;
     }
     .prediction-word {
-        font-size: 14px;
+        font-size: 10px;
     }
 }
 
@@ -609,3 +577,147 @@ button:hover {
 
 
 
+
+
+
+
+/* 🟢 The "Stacking" Magic */
+@media (max-width: 992px) {
+
+  #header{
+  height: 60px;
+  padding: 10px;
+}
+
+.header-container{
+  gap: 10px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+
+.logo-container {
+  width: 32px;
+  height: 32px;
+}
+
+.app-title{
+  font-size: 1.6rem;
+  color: #4770B0;
+  margin: 0;
+}
+
+.floatingBtn {      
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; 
+}
+  
+
+
+
+  .real-container {
+    flex-direction: column; /* Tablet/Mobile: stack vertically */
+    width: 98%; 
+    /* Add specific padding so it doesn't touch the screen edges */
+    padding: 0 10px;
+  }
+
+  .s-to-t-section, 
+  .sidebar-section {
+    width: 100%; /* Force both to take full width when stacked */
+  }
+  
+
+  .card-header {
+  top: 0;
+  color: #000000;
+  padding: 6px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+
+  .sentenceBox{
+    font-size: 1.0rem;
+    text-align: center;
+    /* border: 2px solid #00ff00; */
+    min-height: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); */
+    /* box-shadow: 0px 0px 8px 4px #8888; */
+    margin-bottom: 2px;
+    width: 100%;
+  }
+  
+  .sidebar-section{
+    padding: 0;
+    gap: 5px;
+  }
+
+  .prediction-card{
+    padding: 5px;
+  }
+
+  .card-header-tab {
+    background: white;
+    border: 1px solid #ccc;
+    border-bottom: none;
+
+    border-radius: 10px 10px 0 0;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+  .card-body {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    min-height: 70px; 
+}
+
+  .prediction-word{
+    font-size: 12px;
+    
+  }
+
+  .rank-num {
+    font-size: 12px;
+    color: #252b3b;
+    width: 30px;
+}
+
+
+  #confirmed-words-list {    
+    height: 140px;         
+    width: 100%;
+    align-content: flex-start; 
+    overflow-x: auto;      
+    padding: 10px;
+    gap: 0 40px;           
+}
+
+}
+
+@media (min-width: 600px) and (max-width: 992px) {
+  .sidebar-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .prediction-card {
+    flex: 1;
+    min-width: 200px; /* Prevents them from getting too skinny */
+  }
+}
+
+/* Phone view: Everything stacks perfectly */
+@media (max-width: 600px) {
+  .sidebar-section {
+    flex-direction: column;
+  }
+}

@@ -42,7 +42,12 @@ function addWordToHistory(word) {
     if (!list) return;
     const row = document.createElement('div');
     row.className = 'word-history-row'; 
-    row.innerHTML = `<span class="history-label">Word ${wordCounter}</span><span class="history-value">${word.toUpperCase()}</span>`;
+    const paddedIndex = wordCounter.toString().padStart(2, '0');
+
+    row.innerHTML = `
+        <span class="history-label">${paddedIndex}</span>
+        <span class="history-value">${word.toUpperCase()}</span>
+    `;
     list.appendChild(row);
     wordCounter++;
 }
@@ -84,8 +89,8 @@ async function processVideoFrame() {
                 if (wordEl && confEl) {
                     wordEl.innerText = item.label;
                     confEl.innerText = item.conf.toFixed(1) + "%";
-                    wordEl.style.color = (rank === 1) ? "#3878ec" : "#F0F0F0";
-                    confEl.style.color = (rank === 1) ? "#3878ec" : "#F0F0F0";
+                    wordEl.style.color = (rank === 1) ? "#4770B0" : "#252b3b";
+                    confEl.style.color = (rank === 1) ? "#4770B0" : "#252b3b";
                 }
             });
         }
@@ -154,7 +159,7 @@ if (data.state === 'SIGNING' || data.state === 'EVALUATE') {
     
     // Visual Flash Effect
     // sentenceBox.style.backgroundColor = "white"; // Slight grey flash
-    setTimeout(() => { sentenceBox.style.backgroundColor = "#0f172a"; }, 500);
+    setTimeout(() => { sentenceBox.style.backgroundColor = "#dde4ee"; }, 500);
 }
         } catch (err) {
             console.error("Server error or timeout:", err);
