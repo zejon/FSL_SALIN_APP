@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import cv2
 import mediapipe as mp
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from collections import deque
 from pathlib import Path
@@ -252,6 +252,12 @@ def decode_base64_image(b64_str):
     img_data = base64.b64decode(b64_str)
     nparr = np.frombuffer(img_data, np.uint8)
     return cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('index.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():

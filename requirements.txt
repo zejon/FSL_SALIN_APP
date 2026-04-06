@@ -7,3 +7,4 @@ torch
 opencv-python
 mediapipe
 tensorflow
+python-3.11.10

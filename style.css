@@ -265,14 +265,6 @@ button {
     /* box-shadow: 0px 0px 8px 4px #8888;  */
 }
 
-#videoElement, #input_video {
-  width: 100%;
-  height: auto;
-  border-radius: 15px;
-  aspect-ratio: 16 / 9; /* Maintains shape */
-  object-fit: cover;
-  background: #000;
-}
 
 #input_video, #output_canvas {
     width: 100%;       /* Fills the container width */
