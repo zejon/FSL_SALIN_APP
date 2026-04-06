@@ -168,7 +168,7 @@ button {
     background: #dde4ee;
     color: #252b3b; 
     font-family: 'Google Sans', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.5rem); 
+    font-size: clamp(1rem, 4vw, 3rem); 
     font-weight: bold;
     padding: 10px;
     border-radius: 12px;
@@ -190,7 +190,7 @@ button {
     background: #dde4ee;
     color: #252b3b; 
     font-family: 'Google Sans', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(1rem, 4vw, 1.5rem);
     font-weight: bold;
     padding: 10px;
     border-radius: 12px;
@@ -627,7 +627,7 @@ button:hover {
 }
 
 #sentenceBox {
-          font-size: 1.2em; 
+          font-size: 2em; 
           border-radius: 12px;
       }
 }
@@ -783,7 +783,7 @@ button:hover {
   }
 
   #sentenceBox {
-    font-size: 1.2em; 
+    font-size: 2em; 
 }
 
   .card h3 {
