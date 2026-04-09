@@ -7,3 +7,5 @@ torch
 opencv-python
 mediapipe
 tensorflow
+inflect
+nltk

@@ -254,9 +254,9 @@ def decode_base64_image(b64_str):
     return cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
 
-@app.route('/', methods=['GET'])
-def home():
-    return render_template('index.html')
+# @app.route('/', methods=['GET'])
+# def home():
+#     return render_template('index.html')
 
 
 @app.route('/predict', methods=['POST'])
